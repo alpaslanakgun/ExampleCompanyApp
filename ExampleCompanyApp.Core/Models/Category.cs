@@ -1,7 +1,6 @@
-﻿
-namespace ExampleCompanyApp.Core
+﻿namespace ExampleCompanyApp.Core.Models
 {
-    public class Category:BaseEntity
+    public class Category : BaseEntity
     {
         public string Name { get; set; }
         public ICollection<Product> Products { get; set; }
