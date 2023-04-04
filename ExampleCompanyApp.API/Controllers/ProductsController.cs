@@ -12,12 +12,14 @@ namespace ExampleCompanyApp.API.Controllers
     {
 
         private readonly IMapper _mapper;
-        private readonly IService<Product> _service;
+   
+        private readonly IProductService _service;
 
-        public ProductsController(IMapper mapper, IService<Product> service)
+        public ProductsController(IMapper mapper, IService<Product> service, IProductService productService)
         {
             _mapper = mapper;
-            _service = service;
+            _service = productService;
+           
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -28,6 +30,13 @@ namespace ExampleCompanyApp.API.Controllers
 
          
             return CreateActionResult(CustomResponseDto<List<ProductDto>>.Success(200,productsDtos));
+        }
+
+        [HttpGet("GetProductWithCategory")]
+        public async Task<IActionResult> GetProductWithCategory()
+        {
+            return CreateActionResult(await _service.GetProductWithCategoryAsync());
+
         }
 
         [HttpGet("{id}")]

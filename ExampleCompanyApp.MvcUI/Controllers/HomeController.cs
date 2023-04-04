@@ -15,7 +15,13 @@ namespace ExampleCompanyApp.MvcUI.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var model = new SampleModel { Id = 1, Name = "Sample Model" };
+
+            var x = new ObjectResult(model);
+            ObjectResult xa = new ObjectResult(model);
+           
+
+            return View(x);
         }
 
         public IActionResult Privacy()
@@ -27,6 +33,12 @@ namespace ExampleCompanyApp.MvcUI.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        class SampleModel
+        {
+            public int Id;
+            public string Name;
         }
     }
 }
