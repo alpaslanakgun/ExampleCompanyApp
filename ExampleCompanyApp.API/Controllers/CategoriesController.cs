@@ -1,10 +1,11 @@
-﻿using ExampleCompanyApp.Core.Services;
+﻿using ExampleCompanyApp.API.Filters;
+using ExampleCompanyApp.Core.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExampleCompanyApp.API.Controllers
 {
-
+  
     public class CategoriesController : BaseController
     {
         private readonly ICategoryService _categoryService;

@@ -1,4 +1,6 @@
 using System.Reflection;
+using ExampleCompanyApp.API.Filters;
+using ExampleCompanyApp.API.Middlewares;
 using ExampleCompanyApp.Core.Repositories;
 using ExampleCompanyApp.Core.Services;
 using ExampleCompanyApp.Core.UnitOfWorks;
@@ -7,13 +9,26 @@ using ExampleCompanyApp.Repository.Repositories;
 using ExampleCompanyApp.Repository.UnitOfWorks;
 using ExampleCompanyApp.Service.Mapping;
 using ExampleCompanyApp.Service.Services;
+using ExampleCompanyApp.Service.Validations;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.Filters.Add(new ValidaterFilter())).AddFluentValidation(x=>x.RegisterValidatorsFromAssemblyContaining<ProductDtoValidator>());
+
+//This code snippet is configuring the behavior of the ASP.NET Core API regarding model validation errors.
+//Bu kod parçasý, ASP.NET Core API'nin model doðrulama hatalarýyla ilgili davranýþýný yapýlandýrmak için kullanýlýr.
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter=true;
+});
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -47,6 +62,8 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
+
+app.UserCustomException();
 
 app.UseAuthorization();
 

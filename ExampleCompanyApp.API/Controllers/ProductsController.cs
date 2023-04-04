@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ExampleCompanyApp.API.Filters;
 using ExampleCompanyApp.Core.DTOs;
 using ExampleCompanyApp.Core.Models;
 using ExampleCompanyApp.Core.Services;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExampleCompanyApp.API.Controllers
 {
-
+    [ValidaterFilter]
     public class ProductsController :BaseController
     {
 
