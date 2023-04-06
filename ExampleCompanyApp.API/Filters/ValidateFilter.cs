@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ExampleCompanyApp.API.Filters
 {
-    public class ValidaterFilter:ActionFilterAttribute
+    public class ValidateFilter:ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {

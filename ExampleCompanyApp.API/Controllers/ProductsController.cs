@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExampleCompanyApp.API.Controllers
 {
-    [ValidaterFilter]
+    [ValidateFilter]
     public class ProductsController :BaseController
     {
 
@@ -16,7 +16,7 @@ namespace ExampleCompanyApp.API.Controllers
    
         private readonly IProductService _service;
 
-        public ProductsController(IMapper mapper, IService<Product> service, IProductService productService)
+        public ProductsController(IMapper mapper, IProductService productService)
         {
             _mapper = mapper;
             _service = productService;
@@ -39,7 +39,7 @@ namespace ExampleCompanyApp.API.Controllers
             return CreateActionResult(await _service.GetProductWithCategoryAsync());
 
         }
-
+        [ServiceFilter(typeof(NotFoundFilter<Product>))]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

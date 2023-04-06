@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ExampleCompanyApp.Core.Repositories;
 using ExampleCompanyApp.Core.Services;
 using ExampleCompanyApp.Core.UnitOfWorks;
+using ExampleCompanyApp.Service.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExampleCompanyApp.Service.Services
@@ -24,7 +25,13 @@ namespace ExampleCompanyApp.Service.Services
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+          var hasProduct= await _repository.GetByIdAsync(id);
+          if (hasProduct==null)
+          {
+              throw new NotFoundException($"{typeof(T).Name}( {id}) not found");
+          }
+
+          return hasProduct;
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()

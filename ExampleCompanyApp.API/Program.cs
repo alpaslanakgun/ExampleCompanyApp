@@ -1,25 +1,21 @@
 using System.Reflection;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using ExampleCompanyApp.API.Filters;
 using ExampleCompanyApp.API.Middlewares;
-using ExampleCompanyApp.Core.Repositories;
-using ExampleCompanyApp.Core.Services;
-using ExampleCompanyApp.Core.UnitOfWorks;
+using ExampleCompanyApp.API.Modules;
 using ExampleCompanyApp.Repository;
-using ExampleCompanyApp.Repository.Repositories;
-using ExampleCompanyApp.Repository.UnitOfWorks;
 using ExampleCompanyApp.Service.Mapping;
-using ExampleCompanyApp.Service.Services;
 using ExampleCompanyApp.Service.Validations;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers(options => options.Filters.Add(new ValidaterFilter())).AddFluentValidation(x=>x.RegisterValidatorsFromAssemblyContaining<ProductDtoValidator>());
+builder.Services.AddControllers(options => options.Filters.Add(new ValidateFilter())).AddFluentValidation(x=>x.RegisterValidatorsFromAssemblyContaining<ProductDtoValidator>());
 
 //This code snippet is configuring the behavior of the ASP.NET Core API regarding model validation errors.
 //Bu kod parçasý, ASP.NET Core API'nin model doðrulama hatalarýyla ilgili davranýþýný yapýlandýrmak için kullanýlýr.
@@ -32,14 +28,10 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMemoryCache();
 
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
-builder.Services.AddScoped(typeof(IService<>),typeof(Service<>));
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<ICategoryService,CategoryService>(); 
-builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
+
+builder.Services.AddScoped(typeof(NotFoundFilter<>));
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
 
@@ -50,6 +42,11 @@ builder.Services.AddDbContext<ExampleCompanyDbContext>(x =>
         option.MigrationsAssembly(Assembly.GetAssembly(typeof(ExampleCompanyDbContext)).GetName().Name);
     });
 });
+
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder => containerBuilder.RegisterModule(new RepoServiceModule()));
+
 
 var app = builder.Build();
 
@@ -63,7 +60,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UserCustomException();
+app.UseCustomException();
 
 app.UseAuthorization();
 
