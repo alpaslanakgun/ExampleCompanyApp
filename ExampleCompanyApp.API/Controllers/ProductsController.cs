@@ -25,9 +25,9 @@ namespace ExampleCompanyApp.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var products = await _service();
+            var products = await _service.GetProductWithCategoryAsync();
 
-            var productsDtos=_mapper.Map<List<ProductDto>>(products.ToList());
+            var productsDtos=_mapper.Map<List<ProductDto>>(products);
 
          
             return CreateActionResult(CustomResponseDto<List<ProductDto>>.Success(200,productsDtos));
@@ -37,7 +37,7 @@ namespace ExampleCompanyApp.API.Controllers
         public async Task<IActionResult> GetProductWithCategory()
         {
 
-            return CreateActionResult(await _service.GetProductsWithCategory());
+            return CreateActionResult(await _service.GetProductWithCategoryAsync());
         }
 
         [ServiceFilter(typeof(NotFoundFilter<Product>))]
