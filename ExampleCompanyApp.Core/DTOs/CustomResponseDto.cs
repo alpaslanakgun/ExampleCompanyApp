@@ -5,6 +5,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using ExampleCompanyApp.Core.Models;
 
 namespace ExampleCompanyApp.Core.DTOs
 {
@@ -35,7 +36,6 @@ namespace ExampleCompanyApp.Core.DTOs
         {
             return new CustomResponseDto<T> { StatusCode = statusCode,Errors = new List<string>{error} };
         }
-
 
     }
 }

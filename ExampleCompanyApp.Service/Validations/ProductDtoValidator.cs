@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ExampleCompanyApp.Core.DTOs;
+﻿using ExampleCompanyApp.Core.DTOs;
 using FluentValidation;
 
 namespace ExampleCompanyApp.Service.Validations
 {
-    public class ProductDtoValidator:AbstractValidator<ProductDto>
+    public class ProductDtoValidator : AbstractValidator<ProductDto>
     {
         public ProductDtoValidator()
         {
@@ -16,7 +11,7 @@ namespace ExampleCompanyApp.Service.Validations
 
             RuleFor(X => X.Price).InclusiveBetween(1, int.MaxValue).WithMessage("{PropertyName} must be grater 0");
             RuleFor(X => X.Stock).InclusiveBetween(1, int.MaxValue).WithMessage("{PropertyName} must be grater 0");
-            RuleFor(X => X.CategoryId).InclusiveBetween(1, int.MaxValue).WithMessage("{PropertyName} must be grater 0");
+
         }
     }
 }

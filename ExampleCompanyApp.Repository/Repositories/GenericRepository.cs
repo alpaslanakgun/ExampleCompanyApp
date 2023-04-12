@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using ExampleCompanyApp.Core.Repositories;
+﻿using ExampleCompanyApp.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace ExampleCompanyApp.Repository.Repositories
 {
-    public class GenericRepository<T>:IGenericRepository<T> where T:class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly ExampleCompanyDbContext _context;
         private readonly DbSet<T> _dbSet;
@@ -50,7 +47,7 @@ namespace ExampleCompanyApp.Repository.Repositories
 
         public void Update(T entity)
         {
-            _dbSet.RemoveRange(entity);
+            _dbSet.UpdateRange(entity);
         }
 
         public void Remove(T entity)
@@ -60,7 +57,7 @@ namespace ExampleCompanyApp.Repository.Repositories
 
         public void RemoveRange(IEnumerable<T> entities)
         {
-           _dbSet.RemoveRange(entities);
+            _dbSet.RemoveRange(entities);
         }
     }
 }

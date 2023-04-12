@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ExampleCompanyApp.Core.UnitOfWorks;
-using Microsoft.Data.SqlClient;
+﻿using ExampleCompanyApp.Core.UnitOfWorks;
 
 namespace ExampleCompanyApp.Repository.UnitOfWorks
 {
-    public class UnitOfWork:IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly ExampleCompanyDbContext _context;
 
